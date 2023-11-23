@@ -134,6 +134,11 @@ class LoanApprovalSystem:
         return {'application_id': application['_id'], 'result': decision, 'explanation': explanation}
 
 
+@app.route('/')
+def home():
+    return 'Welcome to my Loan Approval Bot!'
+
+
 @app.route('/process-entry', methods=['POST'])
 def process_entry():
     '''API endpoint to receive and process POST data.'''
