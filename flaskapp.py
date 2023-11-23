@@ -21,6 +21,13 @@ logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 
 class LoanApprovalSystem:
+
+    def format_url(self, url):
+        '''Ensure the URL starts with http:// or https://.'''
+        if not url.startswith(('http://', 'https://')):
+            return 'https:' + url  # You can choose 'http://' based on your requirement
+        return url
+    
     def download_file(self, url):
         '''Download a file from a URL to a temporary file.'''
         response = requests.get(url)
@@ -56,8 +63,8 @@ class LoanApprovalSystem:
 
     def extract_from_files(self, payslip_path, credit_report_path, json_data):
         '''Extract net salary and credit score from given image file paths or URLs.'''
-        payslip_real_path = self.get_file_path(payslip_path)
-        credit_report_real_path = self.get_file_path(credit_report_path)
+        payslip_real_path = self.get_file_path(self.format_url(payslip_path))
+        credit_report_real_path = self.get_file_path(self.format_url(credit_report_path))
         payslip_text = self.image_to_text(payslip_real_path)
         credit_report_text = self.image_to_text(credit_report_real_path)
 
