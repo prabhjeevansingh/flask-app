@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 import logging
 import pytesseract
-import datetime
+from datetime import datetime
 import re
 import requests
 import os
@@ -14,7 +14,7 @@ from openai import OpenAI
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 client = OpenAI(
-    api_key= "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"
+    api_key= ('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')
 )
 
 # Setting up logging
@@ -100,7 +100,8 @@ class LoanApprovalSystem:
         criteria_evaluation['Duration at Current Job >= 2 Years'] = application['Duration at Current Job'] >= 2
         criteria_evaluation['No History of Bankruptcy'] = application['History of Bankruptcy'] == 'No'
 
-        age = datetime.datetime.now().year - int(application['Date of Birth'].split('-')[0])
+        birth_date = datetime.strptime(application['Date of Birth'], '%d/%m/%Y')
+        age = datetime.now().year - birth_date.year
         criteria_evaluation['Age Between 18 and 70'] = 18 <= age <= 70
         criteria_evaluation['Residency Status as Permanent Resident or Citizen'] = application['Residency Status'] in ['Permanent Resident', 'Citizen']
 
