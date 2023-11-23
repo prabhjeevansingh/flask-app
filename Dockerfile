@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 # Install Tesseract OCR
 RUN apt-get update && \
-    apt-get install -y tesseract-ocr && \
+    apt-get install -y tesseract && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
