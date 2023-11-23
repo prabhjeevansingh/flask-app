@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 import logging
-import pytesseract
+import easyocr
 from datetime import datetime
 import re
 import requests
@@ -11,7 +11,6 @@ from PIL import Image
 from openai import OpenAI
 
 
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 client = OpenAI(
     api_key= ('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')
@@ -56,12 +55,14 @@ class LoanApprovalSystem:
             return path
         
     def image_to_text(self, image_path):
-        '''Convert an image file to text using pytesseract OCR.'''
+        '''Convert an image file to text using EasyOCR.'''
         try:
-            text = pytesseract.image_to_string(Image.open(image_path))
+            reader = easyocr.Reader(['en'])  # 'en' for English, add more languages if needed
+            results = reader.readtext(image_path)
+            text = ' '.join([result[1] for result in results])
             return text
         except Exception as e:
-            logging.error(f"Error processing image: {e}")
+            logging.error(f"Error processing image with EasyOCR: {e}")
             raise
 
     def extract_from_files(self, payslip_path, credit_report_path, json_data):
