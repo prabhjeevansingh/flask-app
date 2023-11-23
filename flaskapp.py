@@ -10,6 +10,9 @@ from urllib.parse import urlparse
 from PIL import Image
 from openai import OpenAI
 
+
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
 client = OpenAI(
     api_key= "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"
 )
